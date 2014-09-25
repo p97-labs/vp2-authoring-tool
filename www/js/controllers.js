@@ -27,7 +27,7 @@ angular.module('starter.controllers', [])
     vpApi.authenticate($scope.loginData, 
       function(data, status){
         // This is the success callback
-        $location.path('/app/survey-list');
+        $location.path('/app/surveylist');
       },
       function(data, status){
         // This is the error callback
@@ -39,10 +39,12 @@ angular.module('starter.controllers', [])
     );
   };
 
-  if (vpApi.user.token !== null){
-    $location.path('/app/survey-list');
-  } 
+})
 
+.controller('LandingCtrl', function($scope, $location, vpApi) {
+  if (vpApi.user.token !== null){
+    $location.path('/app/surveylist');
+  }
 })
 
 

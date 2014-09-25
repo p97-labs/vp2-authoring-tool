@@ -35,11 +35,11 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
       url: "/landing",
       views: {
         'menuContent' :{
-          templateUrl: "templates/login.html"
+          templateUrl: "templates/login.html",
+          controller: 'LandingCtrl'
         }
       }
     })
-
 
     .state('app.search', {
       url: "/search",
@@ -59,8 +59,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
         }
       }
     })
-    .state('app.surveyList', {
-      url: "/app/survey-list",
+    .state('app.surveylist', {
+      url: "/surveylist",
       views: {
         'menuContent' :{
           templateUrl: "templates/survey-list.html",
