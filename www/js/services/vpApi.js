@@ -2,10 +2,15 @@ angular.module('starter.services', [])
 
 .factory( 'vpApi', ['$http', function($http) {
   
+
+
   var user = {username:null,
               token:null,
               profile:null,
               };
+  if (localStorage.getItem('token')) {
+    user.token = localStorage.getItem('token');
+  }
   var apiBase = 'http://localhost:8000/api/v2/';
 
   function login(data, success_callback, error_callback) { 
@@ -17,9 +22,13 @@ angular.module('starter.services', [])
     var url = apiBase + 'authenticate/';
     user.username = data.username;
     
-    $http.post(url, data)
+    
+    // $http.defaults.headers.common.Authorization = 'Token ' + user.token;
+    var config = {'Authorization':'Token ' + user.token};  
+    $http.post(url, data, config)
       .success(function(data, status){
         user.token = data.token;
+        localStorage.setItem('token', data.token);
         success_callback(data, status);
       })
       .error(function(data, status){
@@ -33,11 +42,12 @@ angular.module('starter.services', [])
 
   function fetch(resource, data, success, fail){
     var url = apiBase + resource + '/';
-    $http.get(url, data, function(data, res){
-      success(data, res);
-    },
-    function(data, res){
-      fail(data, res);
+    var config = {headers: {'Authorization':'Token ' + user.token}};
+    $http.get(url, config).success(function(data, status){
+      success(data, status);
+    })
+    .error(function(data, status){
+      fail(data, status);
     });
   }
 

@@ -27,8 +27,7 @@ angular.module('starter.controllers', [])
     vpApi.authenticate($scope.loginData, 
       function(data, status){
         // This is the success callback
-        window.alert("Success");
-        $location.path('/app/playlists');
+        $location.path('/app/survey-list');
       },
       function(data, status){
         // This is the error callback
@@ -38,30 +37,34 @@ angular.module('starter.controllers', [])
 
       }
     );
-
-
-    if (vpApi.user.token !== null){
-      $location.path('/playlists');
-    } 
-
   };
+
+  if (vpApi.user.token !== null){
+    $location.path('/app/survey-list');
+  } 
+
 })
 
 
-.controller('PlaylistsCtrl', function($scope, vpApi) {
+.controller('SurveyListCtrl', function($scope, $location, vpApi) {
   
-  $scope.playlists = [];
-
-  $scope.fetchSurveySucess = function(data, res){
-    console.log("success");
+  if (vpApi.user.token === null){
+    $location.path('/app/login');
   }
-  $scope.fetchSurveyFail = function(data, res){
+  $scope.surveys = [];
+
+  $scope.fetchSurveySucess = function(data, status){
+    console.log("success");
+    $scope.surveys = data;
+  }
+  $scope.fetchSurveyFail = function(data, status){
     console.log("fail");
   }
 
   vpApi.fetch('survey/survey', {}, $scope.fetchSurveySucess, $scope.fetchSurveyFail);
 
 })
+
 
 .controller('PlaylistCtrl', function($scope, $stateParams) {
 });
