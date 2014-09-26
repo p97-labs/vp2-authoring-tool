@@ -34,7 +34,6 @@ angular.module('starter.controllers', [])
         console.log(data)
         console.log(status)
         window.alert("Fail" + status);
-
       }
     );
   };
@@ -47,8 +46,7 @@ angular.module('starter.controllers', [])
   }
 })
 
-
-.controller('SurveyListCtrl', function($scope, $location, vpApi) {
+.controller('SurveyListCtrl', function($scope, $location, vpApi, Survey) {
   
   if (vpApi.user.token === null){
     $location.path('/app/login');
@@ -59,14 +57,61 @@ angular.module('starter.controllers', [])
     console.log("success");
     $scope.surveys = data;
   }
+  
   $scope.fetchSurveyFail = function(data, status){
     console.log("fail");
   }
 
   vpApi.fetch('survey/survey', {}, $scope.fetchSurveySucess, $scope.fetchSurveyFail);
-
+  //Survey.get({}, $scope.fetchSurveySucess);
 })
 
 
-.controller('PlaylistCtrl', function($scope, $stateParams) {
+.controller('SurveyDetailCtrl', function($scope, $stateParams, $ionicModal, Survey, vpApi) {
+  console.log('in survey');
+  $scope.survey = Survey.get('slug',$stateParams.surveySlug);
+
+  // If there is no survey try reloading.
+  if ($scope.survey.length === 0){
+    vpApi.fetch('survey/survey', {}, function(data, status){
+      $scope.survey = Survey.get('slug',$stateParams.surveySlug);
+    },
+    function(data, status){
+      console.log('error');
+    });
+  }
+
+  $ionicModal.fromTemplateUrl('templates/question/question_form_modal.html', {
+      scope: $scope,
+      animation: 'slide-in-down'
+  }).then(function(modal) {
+    $scope.modal = modal;
+  });
+  $scope.openModal = function() {
+    $scope.modal.show();
+  };
+  $scope.closeModal = function(action) {
+    $scope.modal.hide();
+    if (action === 'submit'){
+      console.log('this is where I would post');
+    }
+  };
+
+  //Cleanup the modal when we're done with it!
+  $scope.$on('$destroy', function() {
+    $scope.modal.remove();
+  });
+  // Execute action on hide modal
+  $scope.$on('modal.hidden', function() {
+    // Execute action
+  });
+  // Execute action on remove modal
+  $scope.$on('modal.removed', function() {
+    // Execute action
+  });
+
+  $scope.editQuestion = function(questionId){
+    $scope.openModal(questionId);
+  }
+
 });
