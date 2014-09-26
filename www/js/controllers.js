@@ -68,7 +68,7 @@ angular.module('starter.controllers', [])
 
 
 .controller('SurveyDetailCtrl', function($scope, $stateParams, $ionicModal, Survey, vpApi) {
-  console.log('in survey');
+  $scope.modal = null;
   $scope.survey = Survey.get('slug',$stateParams.surveySlug);
 
   // If there is no survey try reloading.
@@ -81,19 +81,24 @@ angular.module('starter.controllers', [])
     });
   }
 
-  $ionicModal.fromTemplateUrl('templates/question/question_form_modal.html', {
-      scope: $scope,
-      animation: 'slide-in-down'
-  }).then(function(modal) {
-    $scope.modal = modal;
-  });
+
+
   $scope.openModal = function() {
     $scope.modal.show();
   };
-  $scope.closeModal = function(action) {
+  $scope.closeModal = function(command) {
+    /*
+    Inputs:
+    - command: [String] a '-' seperated string containing an action and an object.
+                i.e. submit-question, submit-form
+    */
     $scope.modal.hide();
-    if (action === 'submit'){
-      console.log('this is where I would post');
+    action = action.split('-')[0]
+    obj = action.split('-')[1]
+    if (object === 'question'){
+      console.log('this is where I would post a question');
+    } else if (obj==='form'){
+      console.log('this is where I would post a form');
     }
   };
 
@@ -110,8 +115,47 @@ angular.module('starter.controllers', [])
     // Execute action
   });
 
+
+  $scope.editCallback = function(obj, objId){
+    /*
+    Inputs:
+    - obj: [String] A string indicating the object type to edit, i.e. question, form, block
+    - objId: [Integer] If if is present the form will be preloaded with the data, else it
+              opens a blank form.
+    */
+    template = 'templates/'+obj+'/'+obj+'_form_modal.html'
+    $ionicModal.fromTemplateUrl(template, {
+      scope: $scope,
+      animation: 'slide-in-down'
+    }).then(function(modal) {
+      $scope.modal = modal;
+      $scope.openModal(objId);
+    });
+    
+  }
+
+
+
   $scope.editQuestion = function(questionId){
-    $scope.openModal(questionId);
+    $ionicModal.fromTemplateUrl('templates/question/question_form_modal.html', {
+      scope: $scope,
+      animation: 'slide-in-down'
+    }).then(function(modal) {
+      $scope.modal = modal;
+      $scope.openModal(questionId);
+    });
+    
+  }
+
+  $scope.editForm = function(questionId){
+    $ionicModal.fromTemplateUrl('templates/question/form_form_modal.html', {
+      scope: $scope,
+      animation: 'slide-in-down'
+    }).then(function(modal) {
+      $scope.modal = modal;
+      $scope.openModal(questionId);
+    });
+    
   }
 
 });
