@@ -61,22 +61,22 @@ angular.module('starter', ['ionic', 'ngResource', 'starter.controllers', 'vpApi.
         }
       }
     })
-    .state('app.surveylist', {
-      url: "/surveylist",
+    .state('app.formstacklist', {
+      url: "/formstacks",
       views: {
         'menuContent' :{
-          templateUrl: "templates/survey-list.html",
-          controller: 'SurveyListCtrl'
+          templateUrl: "templates/formstack-list.html",
+          controller: 'FormStackListCtrl'
         }
       }
     })
 
-    .state('app.survey-detail', {
-      url: "/survey/:surveySlug",
+    .state('app.formstack-detail', {
+      url: "/formstack/:formstackSlug",
       views: {
         'menuContent' :{
-          templateUrl: "templates/survey-detail.html",
-          controller: 'SurveyDetailCtrl'
+          templateUrl: "templates/formstack-detail.html",
+          controller: 'FormStackDetailCtrl'
         }
       }
     });

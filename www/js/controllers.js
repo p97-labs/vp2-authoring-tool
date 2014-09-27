@@ -27,7 +27,7 @@ angular.module('starter.controllers', [])
     vpApi.authenticate($scope.loginData, 
       function(data, status){
         // This is the success callback
-        $location.path('/app/surveylist');
+        $location.path('/app/formstacks');
       },
       function(data, status){
         // This is the error callback
@@ -42,45 +42,49 @@ angular.module('starter.controllers', [])
 
 .controller('LandingCtrl', function($scope, $location, vpApi) {
   if (vpApi.user.token !== null){
-    $location.path('/app/surveylist');
+    $location.path('/app/formstacks');
   }
 })
 
-.controller('SurveyListCtrl', function($scope, $location, vpApi, Survey) {
+.controller('FormStackListCtrl', function($scope, $location, vpApi, FormStack) {
   
   if (vpApi.user.token === null){
     $location.path('/app/login');
   }
-  $scope.surveys = [];
-
-  $scope.fetchSurveySucess = function(data, status){
-    console.log("success");
-    $scope.surveys = data;
-  }
+  $scope.formstacks = [];
   
-  $scope.fetchSurveyFail = function(data, status){
-    console.log("fail");
-  }
+  FormStack.load(function(data, status){
+    $scope.formstacks = data;
+  });
+  
 
-  vpApi.fetch('survey/survey', {}, $scope.fetchSurveySucess, $scope.fetchSurveyFail);
-  //Survey.get({}, $scope.fetchSurveySucess);
+  // $scope.fetchFormStackSucess = function(data, status){
+  //   console.log("success");
+  //   $scope.surveys = data;
+  // }
+  
+  // $scope.fetchFormStackFail = function(data, status){
+  //   console.log("fail");
+  // }
+
+  //vpApi.fetch('survey/survey', {}, $scope.fetchFormStackSucess, $scope.fetchFormStackFail);
+  //FormStack.get({}, $scope.fetchFormStackSucess);
 })
 
 
-.controller('SurveyDetailCtrl', function($scope, $stateParams, $ionicModal, Survey, vpApi) {
+.controller('FormStackDetailCtrl', function($scope, $stateParams, $ionicModal, FormStack, vpApi) {
   $scope.modal = null;
-  $scope.survey = Survey.get('slug',$stateParams.surveySlug);
+  $scope.formstack = FormStack.get('slug',$stateParams.formstackSlug);
 
   // If there is no survey try reloading.
-  if ($scope.survey.length === 0){
-    vpApi.fetch('survey/survey', {}, function(data, status){
-      $scope.survey = Survey.get('slug',$stateParams.surveySlug);
-    },
-    function(data, status){
-      console.log('error');
-    });
-  }
-
+  // if ($scope.survey.length === 0){
+  //   vpApi.fetch('survey/survey', {}, function(data, status){
+  //     $scope.survey = FormStack.get('slug',$stateParams.surveySlug);
+  //   },
+  //   function(data, status){
+  //     console.log('error');
+  //   });
+  // }
 
 
   $scope.openModal = function() {
