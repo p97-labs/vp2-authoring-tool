@@ -72,19 +72,14 @@ angular.module('starter.controllers', [])
 })
 
 
-.controller('FormStackDetailCtrl', function($scope, $stateParams, $ionicModal, FormStack, vpApi) {
+.controller('FormStackDetailCtrl', function($scope, $stateParams, $ionicModal, $location, FormStack, vpApi) {
   $scope.modal = null;
   $scope.formstack = FormStack.get('slug',$stateParams.formstackSlug);
 
-  // If there is no survey try reloading.
-  // if ($scope.survey.length === 0){
-  //   vpApi.fetch('survey/survey', {}, function(data, status){
-  //     $scope.survey = FormStack.get('slug',$stateParams.surveySlug);
-  //   },
-  //   function(data, status){
-  //     console.log('error');
-  //   });
-  // }
+  // If there is no formstacks go to the list page.
+  if ($scope.formstack.length === 0){
+    $location.path('/app/formstacks')
+  }
 
 
   $scope.openModal = function() {
@@ -97,8 +92,8 @@ angular.module('starter.controllers', [])
                 i.e. submit-question, submit-form
     */
     $scope.modal.hide();
-    action = action.split('-')[0]
-    obj = action.split('-')[1]
+    action = command.split('-')[0]
+    obj = command.split('-')[1]
     if (object === 'question'){
       console.log('this is where I would post a question');
     } else if (obj==='form'){
@@ -127,7 +122,7 @@ angular.module('starter.controllers', [])
     - objId: [Integer] If if is present the form will be preloaded with the data, else it
               opens a blank form.
     */
-    template = 'templates/'+obj+'/'+obj+'_form_modal.html'
+    template = 'templates/'+obj+'/'+obj+'_edit_modal.html'
     $ionicModal.fromTemplateUrl(template, {
       scope: $scope,
       animation: 'slide-in-down'
@@ -140,26 +135,25 @@ angular.module('starter.controllers', [])
 
 
 
-  $scope.editQuestion = function(questionId){
-    $ionicModal.fromTemplateUrl('templates/question/question_form_modal.html', {
-      scope: $scope,
-      animation: 'slide-in-down'
-    }).then(function(modal) {
-      $scope.modal = modal;
-      $scope.openModal(questionId);
-    });
+  // $scope.editQuestion = function(questionId){
+  //   $ionicModal.fromTemplateUrl('templates/question/question_form_modal.html', {
+  //     scope: $scope,
+  //     animation: 'slide-in-down'
+  //   }).then(function(modal) {
+  //     $scope.modal = modal;
+  //     $scope.openModal(questionId);
+  //   });
     
-  }
+  // }
 
-  $scope.editForm = function(questionId){
-    $ionicModal.fromTemplateUrl('templates/question/form_form_modal.html', {
-      scope: $scope,
-      animation: 'slide-in-down'
-    }).then(function(modal) {
-      $scope.modal = modal;
-      $scope.openModal(questionId);
-    });
-    
-  }
+  // $scope.editForm = function(questionId){
+  //   $ionicModal.fromTemplateUrl('templates/question/form_form_modal.html', {
+  //     scope: $scope,
+  //     animation: 'slide-in-down'
+  //   }).then(function(modal) {
+  //     $scope.modal = modal;
+  //     $scope.openModal(questionId);
+  //   });
+  // }
 
 });

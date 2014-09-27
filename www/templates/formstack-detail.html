@@ -1,0 +1,41 @@
+<ion-view title="{{formstack.name}}">
+  <ion-content class="has-header">
+    <h1></h1>
+    
+    <div class='col col-50'>
+        <div class="card padding " ng-repeat='form in formstack.forms'>
+            <div class="item item-text-wrap">
+                <h2>Form: {{form.name}}</h2>
+                <div>
+                    <p ng-show='form.skip_question'>Skip question: {{form.skip_question}}</p>
+                    <p ng-show='form.event_label'>Event: {{form.event_label}}</p>
+                </div>
+            </div>
+            <div class="item item-divider">            
+                <div class="card padding" ng-repeat='block in form.blocks'>
+                    <div class="item item-divider">
+                        <h3>Block: {{block.name}}</h3>
+                    </div>
+                    <div class="item item-text-wrap">
+                        <div ng-repeat='question in block.questions'>
+                            <h4>Question: {{question.label}}</h4>
+                            <div>{{question.body}}</div>
+                        </div>
+
+                        <div>
+                            <button class="button button-small button-balanced" ng-click="editCallback('question');">
+                                Add Question
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <button class="button button-small button-balanced" ng-click="editCallback('block');">
+                        New Block
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div> <!-- end col-50 -->
+  </ion-content>
+</ion-view>

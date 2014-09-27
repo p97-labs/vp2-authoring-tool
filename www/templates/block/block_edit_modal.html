@@ -1,0 +1,25 @@
+<ion-modal-view>
+  <ion-header-bar>
+    <h1 class="title">New Block</h1>
+  </ion-header-bar>
+  <ion-content>
+    <div class="list">
+      <label class="item item-input">
+        <input type="text" placeholder="Block Name">
+      </label>
+    </div>
+
+    <div class="row">
+        <div class="col col-33">
+            <button ng-click="closeModal('cancel')" class="button button-stable">
+              Cancel
+            </button>
+        </div>
+        <div class="col col-33 col-offset-33">
+            <button ng-click="closeModal('submit-block')" class="button button-positive">
+              Submit
+            </button>
+        </div>
+    </div>
+  </ion-content>
+</ion-modal-view>
