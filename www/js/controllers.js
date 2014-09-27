@@ -72,14 +72,17 @@ angular.module('starter.controllers', [])
 })
 
 
-.controller('FormStackDetailCtrl', function($scope, $stateParams, $ionicModal, $location, FormStack, vpApi) {
+.controller('FormStackDetailCtrl', function($scope, $stateParams, $ionicModal, $location, vpApi, FormStack, Question) {
   $scope.modal = null;
+  $scope.newQuestion = {};  // A temporary object for new question to edit
+
   $scope.formstack = FormStack.get('slug',$stateParams.formstackSlug);
 
   // If there is no formstacks go to the list page.
   if ($scope.formstack.length === 0){
     $location.path('/app/formstacks')
   }
+
 
 
   $scope.openModal = function() {
@@ -91,11 +94,23 @@ angular.module('starter.controllers', [])
     - command: [String] a '-' seperated string containing an action and an object.
                 i.e. submit-question, submit-form
     */
-    $scope.modal.hide();
+    
     action = command.split('-')[0]
     obj = command.split('-')[1]
-    if (object === 'question'){
+    if (obj === 'question'){
       console.log('this is where I would post a question');
+      var data = $scope.newQuestion;
+      var cleaned_data = Question.cleanData(data);
+      Question.create(cleaned_data, function(data, status){
+        if (status >= 400){
+          console.log(data);
+          $scope.newQuestion.field_errors = data;
+        } else {
+          $scope.modal.hide();
+        }
+        
+      });
+
     } else if (obj==='form'){
       console.log('this is where I would post a form');
     }
@@ -115,7 +130,7 @@ angular.module('starter.controllers', [])
   });
 
 
-  $scope.editCallback = function(obj, objId){
+  $scope.editCallback = function(obj, data){
     /*
     Inputs:
     - obj: [String] A string indicating the object type to edit, i.e. question, form, block
@@ -128,32 +143,10 @@ angular.module('starter.controllers', [])
       animation: 'slide-in-down'
     }).then(function(modal) {
       $scope.modal = modal;
-      $scope.openModal(objId);
+      $scope.newQuestion = data;
+      $scope.openModal();
     });
     
   }
-
-
-
-  // $scope.editQuestion = function(questionId){
-  //   $ionicModal.fromTemplateUrl('templates/question/question_form_modal.html', {
-  //     scope: $scope,
-  //     animation: 'slide-in-down'
-  //   }).then(function(modal) {
-  //     $scope.modal = modal;
-  //     $scope.openModal(questionId);
-  //   });
-    
-  // }
-
-  // $scope.editForm = function(questionId){
-  //   $ionicModal.fromTemplateUrl('templates/question/form_form_modal.html', {
-  //     scope: $scope,
-  //     animation: 'slide-in-down'
-  //   }).then(function(modal) {
-  //     $scope.modal = modal;
-  //     $scope.openModal(questionId);
-  //   });
-  // }
 
 });

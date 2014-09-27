@@ -5,14 +5,22 @@
   <ion-content>
     <div class="list">
       <label class="item item-input">
-        <input type="text" placeholder="Label">
+        <input type="text" placeholder="Label" ng-model='newQuestion.label'>
       </label>
+      <p class="field_error" ng-repeat='error in newQuestion.field_errors.label'>{{error}}</p>
       <label class="item item-input">
-        <input type="text" placeholder="Question Type">
+        <input type="text" placeholder="Slug" ng-model='newQuestion.slug'>
       </label>
+      <p class="field_error" ng-repeat='error in newQuestion.field_errors.slug'>{{error}}</p>
       <label class="item item-input">
-        <textarea placeholder="Main Question Body"></textarea>
+        <input type="text" placeholder="Question Type" ng-model='newQuestion.type'>
       </label>
+      <p class="field_error" ng-repeat='error in newQuestion.field_errors.type'>{{error}}</p>
+      <label class="item item-input">
+        <textarea placeholder="Main Question Body" ng-model='newQuestion.body'></textarea>
+      </label>
+      <p class="field_error" ng-repeat='error in newQuestion.field_errors.body'>{{error}}</p>
+
     </div>
     <div class="row">
         <div class="col col-33">
