@@ -52,7 +52,6 @@ angular.module('starter', ['ionic', 'ngResource', 'starter.controllers', 'vpApi.
       }
     })
 
-
     .state('app.browse', {
       url: "/browse",
       views: {

@@ -23,7 +23,6 @@ angular.module('starter.controllers', [])
 
   // Perform the login action when the user submits the login form
   $scope.doLogin = function() {
-    
     vpApi.authenticate($scope.loginData, 
       function(data, status){
         // This is the success callback
