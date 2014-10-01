@@ -5,12 +5,10 @@
   <ion-content class="has-header">
     <ion-list>
       <ion-item ng-repeat="formstack in formstacks" href="#/app/formstack/{{formstack.slug}}">
-        {{formstack.name}} 
-        <div class="small">
-          <span class="badge badge-assertive">{{formstack.stats.form_count}}</span>
-          <span class="badge badge-balanced">{{formstack.stats.block_count}}</span>
-          <span class="badge badge-assertive">{{formstack.stats.question_count}}</span>
-        </div> 
+        <div>{{formstack.name}}</div>
+        <div class="">
+          <div class="badge badge-balanced">{{formstack.stats.form_count}}/{{formstack.stats.block_count}}/{{formstack.stats.question_count}}</div>
+        </div>
       </ion-item>
     </ion-list>
   </ion-content>
